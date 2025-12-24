@@ -1,0 +1,110 @@
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background-color: #f0f8ff;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: auto;
+}
+
+.form-section {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.food-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+/* 食材カードの基本スタイル */
+.food-card {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 8px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    position: relative;
+}
+
+/* 期限に応じた色分け（ここがポイント！） */
+.danger { border-left-color: #ff4d4d; background-color: #fff5f5; } /* 期限切れ・当日 */
+.warning { border-left-color: #ffad33; background-color: #fffaf0; } /* 3日以内 */
+.safe { border-left-color: #2ecc71; } /* 余裕あり */
+
+.delete-btn {
+    margin-top: 10px;
+    background: #ff7675;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.category-badge {
+    font-size: 0.8em;
+    color: #666;
+    background: #eee;
+    padding: 2px 8px;
+    border-radius: 10px;
+    display: inline-block;
+}
+
+.expiry-text {
+    margin: 10px 0 5px 0;
+    font-size: 0.9em;
+}
+
+.status-msg {
+    font-size: 1em;
+    margin-bottom: 10px;
+}
+
+/* 危険な状態（赤）の文字色を強調 */
+.danger .status-msg { color: #d63031; }
+.warning .status-msg { color: #e67e22; }
+
+.stats-section {
+    background-color: #e3f2fd;
+    padding: 10px 20px;
+    border-radius: 20px;
+    display: inline-block;
+    margin-bottom: 20px;
+    font-weight: bold;
+    color: #1976d2;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+#totalCount {
+    font-size: 1.2em;
+    margin: 0 5px;
+}
+
+.search-section {
+    margin-bottom: 20px;
+}
+
+#searchInput {
+    width: 100%;
+    max-width: 400px;
+    padding: 12px 20px;
+    font-size: 16px;
+    border: 2px solid #ddd;
+    border-radius: 25px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+#searchInput:focus {
+    border-color: #3498db;
+}
