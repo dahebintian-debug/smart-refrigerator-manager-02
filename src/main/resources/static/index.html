@@ -1,38 +1,41 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
-    <meta charset="UTF-8">
-    <title>スマート冷蔵庫管理</title>
-    <link rel="stylesheet" href="css/style.css">
+	<meta charset="UTF-8">
+	<title>スマート冷蔵庫管理</title>
+	<link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
-    <div class="container">
-        <h1>🧊 スマート冷蔵冷蔵庫管理</h1>
+	<div class="container">
+		<h1>🧊 スマート冷蔵冷蔵庫管理</h1>
 
 		<div class="stats-section">
 			現在の食材数：<span id="totalCount">0</span>件
 		</div>
-		
+
 		<div class="search-section">
-		    <input type="text" id="searchInput" placeholder="食材名で検索..." oninput="filterFoods()">
+			<input type="text" id="searchInput" placeholder="食材名で検索..." oninput="filterFoods()">
 		</div>
-		
-        <div class="form-section">
-            <input type="text" id="foodName" placeholder="食材名（例：牛乳）">
-            <input type="date" id="expiryDate">
-            <select id="category">
-                <option value="野菜">野菜</option>
-                <option value="肉・魚">肉・魚</option>
-                <option value="乳製品">乳製品</option>
-                <option value="その他">その他</option>
-            </select>
-            <button onclick="addFood()">追加</button>
-        </div>
 
-        <div id="foodList" class="food-grid">
-            </div>
-    </div>
+		<div class="form-section">
+			<input type="text" id="foodName" placeholder="食材名（例：牛乳）">
+			<input type="date" id="expiryDate">
+			<select id="category">
+				<option value="野菜">野菜</option>
+				<option value="肉・魚">肉・魚</option>
+				<option value="乳製品">乳製品</option>
+				<option value="その他">その他</option>
+			</select>
+			<button onclick="addFood()">追加</button>
+		</div>
 
-    <script src="js/app.js"></script>
+		<div id="foodList" class="food-grid">
+		</div>
+	</div>
+
+	<script src="js/app.js"></script>
 </body>
+
 </html>
