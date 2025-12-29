@@ -3,17 +3,24 @@ package com.example.springphoto.model;
 import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 
 @Entity
+@Table(name = "foods")
 @Data
 public class Food {
 	@Id
@@ -25,8 +32,14 @@ public class Food {
 	private String name;
     
 	@NotNull(message = "期限は必須です")
-	@FutureOrPresent(message = "期限に過去の日付は設定できません") // 過去の日付を禁止
+	@FutureOrPresent(message = "期限に過去の日付は設定できません") 
 	private LocalDate expiryDate;
 
-	private String category; // 肉、野菜、飲み物など
+	private String category;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+	@JsonIgnore
+    private User user;
+	
 }
