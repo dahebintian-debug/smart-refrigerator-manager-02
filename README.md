@@ -12,7 +12,7 @@
 
 | 分類 | 技術スタック |
 | :--- | :--- |
-| **Backend** | Java 17 / Spring Boot 3.x / **Spring Security** |
+| **Backend** | Java 21 / Spring Boot 3.x / **Spring Security** |
 | **Frontend** | JavaScript (Vanilla JS) / HTML5 / CSS3 |
 | **Database** | MySQL 8.x |
 | **ORM** | Spring Data JPA |
