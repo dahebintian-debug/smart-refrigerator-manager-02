@@ -9,15 +9,14 @@ import com.example.springphoto.model.User;
 import com.example.springphoto.repository.UserRepository;
 import com.example.springphoto.security.CustomUserDetails;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
-public class CustomUserDetailsService implements UserDetailsService {
+@RequiredArgsConstructor
+public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final UserRepository userRepository;
-
-    public CustomUserDetailsService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
+    
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username)

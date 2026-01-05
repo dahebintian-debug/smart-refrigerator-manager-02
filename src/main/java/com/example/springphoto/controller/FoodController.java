@@ -28,23 +28,6 @@ public class FoodController {
 	@Autowired
 	private final FoodService foodService;
 	
-	/*
-	@GetMapping("/auth/status")
-	public Map<String, Object> getAuthStatus() {
-		Map<String, Object> status = new HashMap<>();
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		
-		// ログイン済み かつ 匿名ユーザー（anonymousUser）でないかチェック処理
-		if (auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getName())) {
-			status.put("isLoggedIn", true);
-			status.put("username", auth.getName());
-		} else {
-			status.put("isLoggedIn", false);
-		}
-		return status;
-	}
-	*/
-	
 	@GetMapping("/foods")
 	@ResponseBody
 	public List<Food> getFoods(@AuthenticationPrincipal CustomUserDetails userDetails) {
