@@ -31,13 +31,11 @@ public class UserController {
 		return "login";
 	}
 
-	// 登録画面を表示
 	@GetMapping("/signup")
 	public String signupForm() {
 		return "signup";
 	}
 
-	// 登録処理を実行
 	@PostMapping("/signup")
 	public String register(@RequestParam String username, @RequestParam String password) {
 		userService.registerUser(username, password);
@@ -51,7 +49,6 @@ public class UserController {
 		Map<String, Object> status = new HashMap<>();
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-		// ログイン済み かつ 匿名ユーザー（anonymousUser）でないかチェック処理
 		if (auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getName())) {
 			status.put("isLoggedIn", true);
 			status.put("username", auth.getName());

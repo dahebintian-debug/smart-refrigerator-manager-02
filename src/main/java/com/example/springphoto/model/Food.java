@@ -42,4 +42,30 @@ public class Food {
 	@JsonIgnore
     private User user;
 	
+    public String getStatus() {
+        if (this.expiryDate == null) return "safe";
+
+        long diffDays = java.time.temporal.ChronoUnit.DAYS.between(
+            java.time.LocalDate.now(),
+            this.expiryDate
+        );
+
+        if (diffDays <= 0) return "danger";
+        if (diffDays <= 3) return "warning";
+        return "safe";
+    }
+
+    public String getStatusMessage() {
+        if (this.expiryDate == null) return "";
+
+        long diffDays = java.time.temporal.ChronoUnit.DAYS.between(
+            java.time.LocalDate.now(),
+            this.expiryDate
+        );
+
+        if (diffDays <= 0) return "期限切れ！急いで！";
+        if (diffDays <= 3) return "そろそろ危ない（あと" + diffDays + "日以内）";
+        return "あと " + diffDays + " 日";
+    }
+	
 }

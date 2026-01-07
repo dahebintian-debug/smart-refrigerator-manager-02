@@ -25,8 +25,7 @@ public class FoodService {
 
     public void deleteFood(Long id, User user) {
         Food food = foodRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Food not found"));       
-        // 食材の持ち主と、今ログインしている人が一致するかチェック処理
+            .orElseThrow(() -> new RuntimeException("Food not found"));
         if (!food.getUser().getId().equals(user.getId())) {
             throw new RuntimeException("他人の食材は削除できません");
         }

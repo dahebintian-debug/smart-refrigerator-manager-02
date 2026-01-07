@@ -31,7 +31,6 @@ public class FoodController {
 	@GetMapping("/foods")
 	@ResponseBody
 	public List<Food> getFoods(@AuthenticationPrincipal CustomUserDetails userDetails) {
-	    // ログイン中のユーザー情報を取得
 	    return foodService.getAllFoods(userDetails.getUser());
 	}
 

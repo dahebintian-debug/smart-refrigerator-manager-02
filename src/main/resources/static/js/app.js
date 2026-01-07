@@ -1,54 +1,40 @@
-// 1. ログイン状態を保持するグローバル変数
 let isLoggedIn = false;
 let allFoods = [];
 
-// ページ読み込み時に実行
 document.addEventListener('DOMContentLoaded', () => {
-	// まずログイン状態を確認し、その中で loadFoods() を呼び出す
 	checkLoginStatus();
 });
 
-/**
- * ログイン状態を確認し、UIを切り替える
- */
 async function checkLoginStatus() {
 	try {
 		const response = await fetch('/api/auth/status');
 		const data = await response.json();
-		isLoggedIn = data.isLoggedIn; // 状態を保存
+		isLoggedIn = data.isLoggedIn; 
 
-		// index.htmlの要素を取得
 		const loginLink = document.getElementById('login-link');
 		const userInfo = document.getElementById('user-info');
 		const addForm = document.getElementById('add-form-container');
 		const usernameSpan = document.getElementById('display-username');
 
 		if (isLoggedIn) {
-			// ログイン中：名前を出してフォームを表示
 			if (loginLink) loginLink.style.display = 'none';
 			if (userInfo) userInfo.style.display = 'flex';
 			if (usernameSpan) usernameSpan.textContent = data.username;
 			if (addForm) addForm.style.display = 'block';
 		} else {
-			// 未ログイン：ログインリンクを出してフォームを隠す
 			if (loginLink) loginLink.style.display = 'block';
 			if (userInfo) userInfo.style.display = 'none';
 			if (addForm) addForm.style.display = 'none';
 		}
 
-		// ログイン状態が確定してから食材を読み込む
 		loadFoods();
 		
 	} catch (error) {
 		console.error('認証ステータスの取得失敗:', error);
-		// エラー時は安全のため未ログインとして扱う
 		loadFoods();
 	}
 }
 
-/**
- * ログアウト処理
- */
 async function handleLogout() {
 	if (!confirm('ログアウトしますか？')) return;
 	try {
@@ -59,9 +45,6 @@ async function handleLogout() {
 	}
 }
 
-/**
- * 食材一覧をAPIから取得
- */
 async function loadFoods() {
 	try {
 		const response = await fetch('/api/foods');
@@ -72,9 +55,6 @@ async function loadFoods() {
 	}
 }
 
-/**
- * 食材一覧を画面に表示する（ボタンの出し分けを含む）
- */
 function displayFoods(foods) {
 	const totalCountElement = document.getElementById('totalCount');
 	if (totalCountElement) totalCountElement.textContent = foods.length;
@@ -85,28 +65,11 @@ function displayFoods(foods) {
 
 	foods.forEach(food => {
 		const card = document.createElement('div');
-
-		// --- 期限判定ロジック ---
-		const today = new Date();
-		today.setHours(0, 0, 0, 0);
-		const expiry = new Date(food.expiryDate);
-		const diffTime = expiry - today;
-		const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-		let statusClass = 'safe';
-		let message = `あと ${diffDays} 日`;
-
-		if (diffDays <= 0) {
-			statusClass = 'danger';
-			message = "期限切れ！急いで！";
-		} else if (diffDays <= 3) {
-			statusClass = 'warning';
-			message = "そろそろ危ない（あと3日以内）";
-		}
+		const statusClass = food.status;
+		const message = food.statusMessage;
 
 		card.className = `food-card ${statusClass}`;
 
-		// ★ ログインしている場合のみ「使い切った」ボタンを作成
 		const deleteBtnHtml = isLoggedIn
 			? `<button class="delete-btn" onclick="deleteFood(${food.id})">使い切った</button>`
 			: '';
@@ -122,9 +85,6 @@ function displayFoods(foods) {
 	});
 }
 
-/**
- * 検索フィルタリング
- */
 function filterFoods() {
 	const query = document.getElementById('searchInput').value.toLowerCase();
 	const filtered = allFoods.filter(food =>
@@ -133,9 +93,6 @@ function filterFoods() {
 	displayFoods(filtered);
 }
 
-/**
- * 食材追加
- */
 async function addFood() {
 	const name = document.getElementById('foodName').value.trim();
 	const date = document.getElementById('expiryDate').value;
@@ -167,9 +124,6 @@ async function addFood() {
 	}
 }
 
-/**
- * 食材削除
- */
 async function deleteFood(id) {
 	if (!confirm('本当に使い切りましたか？')) return;
 
