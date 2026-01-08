@@ -52,6 +52,7 @@ public class Food {
 
         if (diffDays <= 0) return "danger";
         if (diffDays <= 3) return "warning";
+        
         return "safe";
     }
 
@@ -65,6 +66,7 @@ public class Food {
 
         if (diffDays <= 0) return "期限切れ！急いで！";
         if (diffDays <= 3) return "そろそろ危ない（あと" + diffDays + "日以内）";
+        
         return "あと " + diffDays + " 日";
     }
 	

@@ -9,7 +9,7 @@ async function checkLoginStatus() {
 	try {
 		const response = await fetch('/api/auth/status');
 		const data = await response.json();
-		isLoggedIn = data.isLoggedIn; 
+		isLoggedIn = data.isLoggedIn;
 
 		const loginLink = document.getElementById('login-link');
 		const userInfo = document.getElementById('user-info');
@@ -21,17 +21,20 @@ async function checkLoginStatus() {
 			if (userInfo) userInfo.style.display = 'flex';
 			if (usernameSpan) usernameSpan.textContent = data.username;
 			if (addForm) addForm.style.display = 'block';
+
+			loadFoods();
+			
 		} else {
 			if (loginLink) loginLink.style.display = 'block';
 			if (userInfo) userInfo.style.display = 'none';
 			if (addForm) addForm.style.display = 'none';
+
+			displayFoods([]);
 		}
 
-		loadFoods();
-		
 	} catch (error) {
 		console.error('認証ステータスの取得失敗:', error);
-		loadFoods();
+		displayFoods([]);
 	}
 }
 

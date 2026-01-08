@@ -3,6 +3,7 @@ package com.example.springphoto.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -28,11 +29,17 @@ public class UserController {
 
 	@GetMapping("/login")
 	public String loginForm() {
+		if (isAuthenticated()) {
+			return "redirect:/";
+		}
 		return "login";
 	}
 
 	@GetMapping("/signup")
 	public String signupForm() {
+		if (isAuthenticated()) {
+			return "redirect:/";
+		}
 		return "signup";
 	}
 
@@ -42,19 +49,23 @@ public class UserController {
 		return "redirect:/login?signup_success";
 	}
 
-
 	@GetMapping("/api/auth/status")
 	@ResponseBody
 	public Map<String, Object> getAuthStatus() {
 		Map<String, Object> status = new HashMap<>();
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-		if (auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getName())) {
+		if (auth != null && auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken)) {
 			status.put("isLoggedIn", true);
 			status.put("username", auth.getName());
 		} else {
 			status.put("isLoggedIn", false);
 		}
 		return status;
+	}
+
+	private boolean isAuthenticated() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		return auth != null && auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken);
 	}
 }
