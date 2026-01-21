@@ -17,7 +17,7 @@ public class FoodService {
 	private final FoodRepository foodRepository;
 
 	public List<Food> getAllFoods(User user) {
-		return foodRepository.findByUser(user);
+		return foodRepository.findAllByOrderByIdAsc();
 	}
 
 	public void saveFood(Food food, User user) {
@@ -35,7 +35,8 @@ public class FoodService {
 		Food food = foodRepository.findById(id)
 				.orElseThrow(() -> new RuntimeException("Food not found"));
 
-		if (!food.getUser().getId().equals(user.getId())) {
+		if (food.getUser() == null || user == null ||
+				food.getUser().getId().longValue() != user.getId().longValue()) {
 			throw new RuntimeException("権限がありません");
 		}
 
@@ -60,7 +61,8 @@ public class FoodService {
 	public void deleteFood(Long id, User user) {
 		Food food = foodRepository.findById(id)
 				.orElseThrow(() -> new RuntimeException("Food not found"));
-		if (!food.getUser().getId().equals(user.getId())) {
+		if (food.getUser() == null || user == null ||
+				food.getUser().getId().longValue() != user.getId().longValue()) {
 			throw new RuntimeException("他人の食材は削除できません");
 		}
 		foodRepository.deleteById(id);
