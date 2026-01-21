@@ -3,8 +3,11 @@
 
 <head>
 	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>スマート冷蔵庫管理</title>
 	<link rel="stylesheet" href="css/style.css">
+	<link rel="apple-touch-icon" href="/images/icon.png?v=1">
+	<link rel="icon" type="image/png" href="/images/icon.png?v=1">
 </head>
 
 <body>
@@ -28,18 +31,29 @@
 		</div>
 
 		<div class="search-section">
-			<input type="text" id="searchInput" placeholder="食材名で検索..." oninput="filterFoods()">
+			<input type="text" id="searchInput" placeholder="食材名またはカテゴリーで検索..." oninput="filterFoods()">
+			<div class="filter-options">
+				<label><input type="checkbox" id="filterRestock" onchange="filterFoods()"> 買い増し対象</label>
+				<label><input type="checkbox" id="filterNoStock" onchange="filterFoods()"> 在庫なし</label>
+				<label><input type="checkbox" id="filterWarning" onchange="filterFoods()"> ⚠️そろそろ危ない</label>
+				<label><input type="checkbox" id="filterDanger" onchange="filterFoods()"> 🚨期限切れ</label>
+			</div>
 		</div>
 
 		<div id="add-form-container" class="form-section" style="display: none;">
 			<h2>新しい食材を追加</h2>
 			<div class="add-form">
 				<input type="text" id="foodName" placeholder="食材名（例：牛乳）">
+				<input type="number" id="addQuantity" value="1" min="0">
 				<input type="date" id="expiryDate">
+
 				<select id="category">
 					<option value="野菜">野菜</option>
 					<option value="肉・魚">肉・魚</option>
+					<option value="調味料">調味料</option>
 					<option value="乳製品">乳製品</option>
+					<option value="パン・ご飯">パン・ご飯</option>
+					<option value="果物">果物</option>
 					<option value="その他">その他</option>
 				</select>
 				<button onclick="addFood()" class="add-btn">追加</button>

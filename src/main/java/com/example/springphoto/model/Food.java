@@ -10,7 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -24,50 +24,62 @@ import lombok.Data;
 @Data
 public class Food {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY) 
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotBlank(message = "食材名は必須です") 
+	@NotBlank(message = "食材名は必須です")
 	@Size(max = 50, message = "食材名は50文字以内で入力してください")
 	private String name;
-    
+
 	@NotNull(message = "期限は必須です")
-	@FutureOrPresent(message = "期限に過去の日付は設定できません") 
+	//@FutureOrPresent(message = "期限に過去の日付は設定できません")
 	private LocalDate expiryDate;
 
 	private String category;
-	
+
+	@NotNull(message = "数量は必須です")
+	@Min(value = 0, message = "0より小さい値は入力できません")
+	private Integer quantity;
+
+	private Boolean needsRestock = false;
+
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+	@JoinColumn(name = "user_id")
 	@JsonIgnore
-    private User user;
-	
-    public String getStatus() {
-        if (this.expiryDate == null) return "safe";
+	private User user;
 
-        long diffDays = java.time.temporal.ChronoUnit.DAYS.between(
-            java.time.LocalDate.now(),
-            this.expiryDate
-        );
+	public String getStatus() {
+		if (this.expiryDate == null)
+			return "safe";
 
-        if (diffDays <= 0) return "danger";
-        if (diffDays <= 3) return "warning";
-        
-        return "safe";
-    }
+		long diffDays = java.time.temporal.ChronoUnit.DAYS.between(
+				java.time.LocalDate.now(),
+				this.expiryDate);
 
-    public String getStatusMessage() {
-        if (this.expiryDate == null) return "";
+		if (diffDays <= 0)
+			return "danger";
+		if (diffDays <= 3)
+			return "warning";
 
-        long diffDays = java.time.temporal.ChronoUnit.DAYS.between(
-            java.time.LocalDate.now(),
-            this.expiryDate
-        );
+		return "safe";
+	}
 
-        if (diffDays <= 0) return "期限切れ！急いで！";
-        if (diffDays <= 3) return "そろそろ危ない（あと" + diffDays + "日以内）";
-        
-        return "あと " + diffDays + " 日";
-    }
-	
+	public String getStatusMessage() {
+		if (this.quantity != null && this.quantity <= 0)
+			return "在庫がなくなりました！";
+		
+		if (this.expiryDate == null)
+			return "";
+
+		long diffDays = java.time.temporal.ChronoUnit.DAYS.between(
+				java.time.LocalDate.now(),
+				this.expiryDate);
+
+		if (diffDays <= 0)
+			return "期限切れ！急いで！";
+		if (diffDays <= 3)
+			return "そろそろ危ない（あと" + diffDays + "日以内）";
+
+		return "あと " + diffDays + " 日";
+	}
 }

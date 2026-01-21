@@ -44,9 +44,19 @@ public class UserController {
 	}
 
 	@PostMapping("/signup")
-	public String register(@RequestParam String username, @RequestParam String password) {
-		userService.registerUser(username, password);
-		return "redirect:/login?signup_success";
+	public String register(@RequestParam String username, @RequestParam String password,
+			org.springframework.ui.Model model) {
+		try {
+	        userService.registerUser(username, password);
+	        // 成功時はログイン画面へ（メッセージ付き）
+	        return "redirect:/login?signup_success";
+	    } catch (RuntimeException e) {
+	        // 【重要】重複エラーメッセージなどをModelに詰めて画面に戻す
+	        model.addAttribute("errorMessage", e.getMessage());
+	        // 入力したユーザー名を残しておきたい場合は、以下も追加
+	        model.addAttribute("typedUsername", username);
+	        return "signup"; 
+	    }
 	}
 
 	@GetMapping("/api/auth/status")

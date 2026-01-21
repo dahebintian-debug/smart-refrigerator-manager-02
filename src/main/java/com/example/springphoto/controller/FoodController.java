@@ -39,4 +39,9 @@ public class FoodController {
 	public void removeFood(@PathVariable Long id, @AuthenticationPrincipal CustomUserDetails userDetails) {
 		foodService.deleteFood(id, userDetails.getUser());
 	}
+	
+	@org.springframework.web.bind.annotation.PatchMapping("/foods/{id}")
+    public Food updateFood(@PathVariable Long id, @RequestBody Food foodUpdate, @AuthenticationPrincipal CustomUserDetails userDetails) {
+        return foodService.updateFoodStatus(id, foodUpdate.getQuantity(), foodUpdate.getNeedsRestock(), foodUpdate.getExpiryDate(), userDetails.getUser());
+    }
 }

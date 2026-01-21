@@ -16,6 +16,10 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     
     public void registerUser(String username, String password) {
+        if (userRepository.findByUsername(username).isPresent()) {
+            throw new RuntimeException("このユーザー名は既に使用されています。");
+        }
+
         User user = new User();
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
