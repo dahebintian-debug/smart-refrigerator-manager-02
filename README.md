@@ -19,6 +19,11 @@
 | **Build Tool** | Maven |
 | **Authentication** | BCrypt (Password Hashing) |
 
+開発環境と本番環境の差異
+- ローカル開発: MySQL 8.x / DBeaver
+- 本番環境: PostgreSQL (Render)
+- 環境ごとに `application-local.properties` と `application-prod.properties` を使い分け、環境変数による接続管理を徹底。
+
 ## 3. システムアーキテクチャ
 メンテナンス性と堅牢性を重視し、**Spring Securityを組み込んだ3層アーキテクチャ**を採用しています。
 
@@ -67,3 +72,9 @@
 
 ## 7. 今後の展望
 * 現在はAPI形式ですが、今後はこれをベースにReactを用いたモダンなUIへの刷新や、JUnitによる単体テストの自動化を検討しています。
+
+## アップデート情報 (2026/01)
+- **UI/UXの改善**: モバイル端末での日付選択時の挙動を安定させるため、自動保存から「保存ボタン」による手動更新へUIを変更。
+- **セキュリティと安定性の向上**: 
+    - 本番環境（HTTPS）におけるセッション維持のため、SameSite属性を最適化。
+    - APIリクエスト時の厳密なユーザー所有権チェックを実装し、データの堅牢性を向上。

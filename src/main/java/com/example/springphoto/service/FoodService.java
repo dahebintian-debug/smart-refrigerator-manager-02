@@ -17,7 +17,7 @@ public class FoodService {
 	private final FoodRepository foodRepository;
 
 	public List<Food> getAllFoods(User user) {
-		return foodRepository.findAllByOrderByIdAsc();
+		return foodRepository.findByUserOrderByIdAsc(user);
 	}
 
 	public void saveFood(Food food, User user) {
