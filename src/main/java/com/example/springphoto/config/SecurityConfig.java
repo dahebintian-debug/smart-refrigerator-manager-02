@@ -25,7 +25,7 @@ public class SecurityConfig {
 						.permitAll())
 				.logout(logout -> logout
 						.logoutSuccessUrl("/login")
-						.deleteCookies("JSESSIONID") // ログアウト時にクッキーを消す
+						.deleteCookies("JSESSIONID")
 						.invalidateHttpSession(true)
 						.permitAll());
 

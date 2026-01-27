@@ -1,6 +1,7 @@
 package com.example.springphoto.model;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -32,7 +33,6 @@ public class Food {
 	private String name;
 
 	@NotNull(message = "期限は必須です")
-	//@FutureOrPresent(message = "期限に過去の日付は設定できません")
 	private LocalDate expiryDate;
 
 	private String category;
@@ -48,14 +48,16 @@ public class Food {
 	@JsonIgnore
 	private User user;
 
-	public String getStatus() {
+	private Long getDaysUntilExpiry() {
 		if (this.expiryDate == null)
+			return null;
+		return ChronoUnit.DAYS.between(LocalDate.now(), this.expiryDate);
+	}
+
+	public String getStatus() {
+		Long diffDays = getDaysUntilExpiry();
+		if (diffDays == null)
 			return "safe";
-
-		long diffDays = java.time.temporal.ChronoUnit.DAYS.between(
-				java.time.LocalDate.now(),
-				this.expiryDate);
-
 		if (diffDays <= 0)
 			return "danger";
 		if (diffDays <= 3)
@@ -67,14 +69,10 @@ public class Food {
 	public String getStatusMessage() {
 		if (this.quantity != null && this.quantity <= 0)
 			return "在庫がなくなりました！";
-		
-		if (this.expiryDate == null)
+
+		Long diffDays = getDaysUntilExpiry();
+		if (diffDays == null)
 			return "";
-
-		long diffDays = java.time.temporal.ChronoUnit.DAYS.between(
-				java.time.LocalDate.now(),
-				this.expiryDate);
-
 		if (diffDays <= 0)
 			return "期限切れ！急いで！";
 		if (diffDays <= 3)

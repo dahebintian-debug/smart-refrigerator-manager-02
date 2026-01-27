@@ -4,14 +4,12 @@ document.addEventListener('DOMContentLoaded', () => {
 	checkLoginStatus();
 });
 
-// --- 認証・初期化 ---
 async function checkLoginStatus() {
 	try {
 		const response = await fetch('/api/auth/status');
 		const data = await response.json();
 		const isLoggedIn = data.isLoggedIn;
 
-		const loginLink = document.getElementById('login-link');
 		const userInfo = document.getElementById('user-info');
 		const addForm = document.getElementById('add-form-container');
 		const usernameSpan = document.getElementById('display-username');
@@ -24,13 +22,11 @@ async function checkLoginStatus() {
 		}
 
 		if (isLoggedIn) {
-			if (loginLink) loginLink.style.display = 'none';
 			if (userInfo) userInfo.style.display = 'flex';
 			if (usernameSpan) usernameSpan.textContent = data.username;
 			if (addForm) addForm.style.display = 'block';
 			loadFoods();
 		} else {
-			if (loginLink) loginLink.style.display = 'block';
 			if (userInfo) userInfo.style.display = 'none';
 			if (addForm) addForm.style.display = 'none';
 			displayFoods([]);
@@ -51,7 +47,6 @@ async function handleLogout() {
 	}
 }
 
-// --- データ取得・表示 ---
 async function loadFoods() {
 	try {
 		const response = await fetch('/api/foods');
@@ -113,7 +108,6 @@ function displayFoods(foods) {
 	});
 }
 
-// --- 検索・フィルタ ---
 function filterFoods() {
 	const query = document.getElementById('searchInput').value.toLowerCase();
 	const filters = {
@@ -141,7 +135,6 @@ function filterFoods() {
 	displayFoods(filtered);
 }
 
-// --- データ更新操作 ---
 async function addFood() {
 	const nameInput = document.getElementById('foodName');
 	const quantityInput = document.getElementById('addQuantity');

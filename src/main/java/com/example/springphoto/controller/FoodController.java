@@ -28,7 +28,6 @@ import lombok.RequiredArgsConstructor;
 public class FoodController {
 	private final FoodService foodService;
 
-	// ユーザーがnullの場合に401(Unauthorized)を投げる共通メソッド
 	private void checkUser(CustomUserDetails userDetails) {
 		if (userDetails == null || userDetails.getUser() == null) {
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "ログインが必要です");
